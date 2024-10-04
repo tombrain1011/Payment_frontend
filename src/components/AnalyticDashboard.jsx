@@ -33,7 +33,7 @@ function AnalyticsDashboard() {
     try {
       console.log(filter);
       
-      const response = await axios.post('https://payment-backend-chi.vercel.app/analytics', filter);
+      const response = await axios.post('https://2849-64-32-17-130.ngrok-free.app/analytics', filter);
       setPayments(response.data.payments);
      
       console.log(response.data);

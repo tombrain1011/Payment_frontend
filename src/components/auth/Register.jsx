@@ -19,7 +19,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://payment-backend-chi.vercel.app/register', {
+      const response = await axios.post('https://2849-64-32-17-130.ngrok-free.app/register', {
         email,
         password,
       });
