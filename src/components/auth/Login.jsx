@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Loader from './Loader'; // Import your loader component
 import {
   Paper,
   TextField,
@@ -11,6 +12,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
+  const [loading, setLoading] = useState(false);
+  const [showLoader, setShowLoader] = useState(false); // New state for loader visibility
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -19,6 +22,12 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); 
+    setShowLoader(false); 
+    const loaderTimeout = setTimeout(() => {
+      setShowLoader(true);
+    }, 300);
+
     try {
       const response = await axios.post('https://2849-64-32-17-130.ngrok-free.app/login', {
         email,
@@ -28,18 +37,18 @@ const Login = () => {
       
       if (response.data.success) {
         setErrorMessage('Login Success.');
-        setOpenSnackbar(true);
         localStorage.setItem('token', response.data.token);
         navigate('/createLink');
-        
       } else {
         setErrorMessage('Invalid credentials. Please try again.');
-        setOpenSnackbar(true);
       }
     } catch (error) {
       console.error('Login error:', error);
       setErrorMessage('An error occurred. Please try again.');
+    } finally {
+      clearTimeout(loaderTimeout); 
       setOpenSnackbar(true);
+      setLoading(false); 
     }
   };
 
@@ -74,8 +83,8 @@ const Login = () => {
           margin="normal"
           inputProps={{ minLength: 8 }}
         />
-        <Button type="submit" variant="contained" color="primary" fullWidth>
-          Login
+        <Button type="submit" variant="contained" color="primary" fullWidth disabled={loading}>
+          {loading && showLoader ? <Loader /> : 'Login'}
         </Button>
       </form>
       <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
