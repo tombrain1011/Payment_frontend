@@ -33,7 +33,7 @@ function AnalyticsDashboard() {
     try {
       console.log(filter);
       
-      const response = await axios.post('http://127.0.0.1:5000/analytics', filter);
+      const response = await axios.post('https://payment-backend-chi.vercel.app/analytics', filter);
       setPayments(response.data.payments);
      
       console.log(response.data);
